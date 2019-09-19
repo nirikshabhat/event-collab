@@ -1,0 +1,22 @@
+table {
+    width: 100%;
+    padding-left:50px;
+    padding-right:50px;
+  }
+
+  .search-container{
+    width:100%;
+    display: flex;
+  }
+
+  .hdr{
+    text-align: center;
+  }
+
+  .events-container {
+    display: flex;
+  }
+  
+  .mat-row:hover {
+    background-color:grey;
+  }
