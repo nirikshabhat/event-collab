@@ -1,5 +1,4 @@
 table {
-<<<<<<< HEAD
   width: 100%;
 }
 
@@ -40,26 +39,3 @@ table {
   width:60%;
   float: left;
 }
-=======
-    width: 100%;
-    padding-left:50px;
-    padding-right:50px;
-  }
-
-  .search-container{
-    width:100%;
-    display: flex;
-  }
-
-  .hdr{
-    text-align: center;
-  }
-
-  .events-container {
-    display: flex;
-  }
-  
-  .mat-row:hover {
-    background-color:grey;
-  }
->>>>>>> e3d2b03285d5024e3e98a267e12d0f3809f8bcf5

@@ -1,6 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-<<<<<<< HEAD
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
@@ -44,21 +43,10 @@ import {
   MatTreeModule,
 } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-=======
-
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import {EventsComponent} from './events/index'
-import { MatInputModule, MatPaginatorModule, MatProgressSpinnerModule, 
-  MatSortModule, MatTableModule } from "@angular/material";
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-
->>>>>>> e3d2b03285d5024e3e98a267e12d0f3809f8bcf5
 
 @NgModule({
   declarations: [
     AppComponent,
-<<<<<<< HEAD
     EventsComponent,
     AddEventComponent
   ],
@@ -104,19 +92,6 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     MatTooltipModule,
     MatTreeModule,
     HttpClientModule
-=======
-    EventsComponent
-  ],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    AppRoutingModule,
-    MatInputModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatProgressSpinnerModule
->>>>>>> e3d2b03285d5024e3e98a267e12d0f3809f8bcf5
   ],
   providers: [],
   bootstrap: [AppComponent]
