@@ -1,0 +1,23 @@
+<h1 mat-dialog-title>What do you have in mind?</h1>
+<mat-dialog-content>
+    <mat-form-field class="add-event-inp">
+        <input matInput [(ngModel)]="data.name" placeholder="Name">
+    </mat-form-field>
+    <mat-form-field class="add-event-inp">
+        <input matInput [(ngModel)]="data.description" placeholder="Description">
+    </mat-form-field>
+    <mat-form-field class="add-event-inp">
+        <input matInput [(ngModel)]="data.location" placeholder="Location">
+    </mat-form-field>
+    <mat-form-field class="add-event-inp">
+        <input matInput [matDatepicker]="picker" [(ngModel)]="data.event_dt" placeholder="Start Date">
+        <mat-datepicker-toggle matSuffix [for]="picker">
+            <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+        </mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+</mat-dialog-content>
+<div mat-dialog-actions>
+    <button color="accent" mat-button (click)="cancelCreateEvent()">Cancel</button>
+    <button color="primary" mat-button [mat-dialog-close]="data" cdkFocusInitial>Save</button>
+</div>

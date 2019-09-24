@@ -1,28 +1,40 @@
-<div class="header hdr"><h2>List of Events</h2></div>
-
-<div class="search-container">
-    <mat-form-field>
-        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
-    </mat-form-field>
+<div class="header hdr">
+    <h2>List of Events</h2>
 </div>
 
 <div class="events-container">
 
-    <table mat-table [dataSource]="eventsList" matSort class="mat-elevation-z8">
+    <div class="search-add-grp">
+        <div class="search-event-inp">
+            <mat-form-field>
+                <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search for an event">
+            </mat-form-field>
+        </div>
+        <div class="add-event-btn">
+            <button mat-fab color="primary" id="add-button" matTooltip="Add an event" (click)="addEvent()"><i
+                    class="material-icons">add</i></button>
+        </div>
+    </div>
+
+
+    <table color="primary" mat-table [dataSource]="eventsList" mat-paginator matSort matSortDirection="asc"
+        class="events-table mat-elevation-z8">
 
         <ng-container matColumnDef="id">
-            <th mat-header-cell *matHeaderCellDef> Event Id </th>
+            <th mat-header-cell *matHeaderCellDef> Ev Id </th>
             <td mat-cell *matCellDef="let element"> {{element.id}} </td>
         </ng-container>
 
         <ng-container matColumnDef="name">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
-            <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+            <th mat-header-cell mat-cell-eventname *matHeaderCellDef mat-sort-header> Name </th>
+            <td mat-cell mat-cell-eventname *matCellDef="let element"> {{element.name}} </td>
         </ng-container>
 
         <ng-container matColumnDef="description">
-            <th mat-header-cell *matHeaderCellDef> Description </th>
-            <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+            <th mat-header-cell mat-cell-eventname *matHeaderCellDef> Description </th>
+            <td mat-cell mat-cell-eventname *matCellDef="let element" class="mat-column-desc">
+                {{element.description}}
+            </td>
         </ng-container>
 
         <ng-container matColumnDef="location">
@@ -30,11 +42,19 @@
             <td mat-cell *matCellDef="let element"> {{element.location}} </td>
         </ng-container>
 
-        <ng-container matColumnDef="on">
+        <ng-container matColumnDef="event_dt">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Date </th>
-            <td mat-cell *matCellDef="let element"> {{element.on | date:'MMM d, y'}} </td>
+            <td mat-cell *matCellDef="let element"> {{element.event_dt | date:'MMM d, y'}} </td>
         </ng-container>
 
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef> Action </th>
+
+            <td mat-cell *matCellDef="let element" (click)="deleteEvent(element)">
+                <button mat-icon-button color="warn">
+                    <mat-icon aria-label="delete an event">delete</mat-icon>
+                </button>
+        </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>

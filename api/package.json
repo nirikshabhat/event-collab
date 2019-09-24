@@ -1,0 +1,40 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "API for Event Collaboration",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nirikshabhat/event-collab.git"
+  },
+  "keywords": [
+    "Event Collaboration",
+    "Angular",
+    "Node js",
+    "Express",
+    "MySQL"
+  ],
+  "author": "Niriksha Bhat",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nirikshabhat/event-collab/issues"
+  },
+  "homepage": "https://github.com/nirikshabhat/event-collab#readme",
+  "dependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "babel-polyfill": "^6.26.0",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "esm": "^3.2.25",
+    "express": "^4.17.1",
+    "mysql": "^2.17.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.6.0",
+    "@babel/preset-env": "^7.6.0",
+    "@babel/register": "^7.6.0"
+  }
+}
