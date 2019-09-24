@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 export class Event {
     id: number;
     name: string;
@@ -22,4 +23,21 @@ export class Event {
         this.event_dt = new Date();
     }
 
+=======
+export class Event{
+    id:number;
+    name:string;
+    description:string;
+    location:string;
+    on: Date;
+
+    
+    constructor(eventId:number,eventName:string,eventDesc:string,eventLocation:string,eventDt:Date) {
+        this.id=eventId;
+        this.name=eventName;
+        this.description=eventDesc;
+        this.location=eventDesc;
+        this.on=eventDt;
+    }
+>>>>>>> e3d2b03285d5024e3e98a267e12d0f3809f8bcf5
 }
