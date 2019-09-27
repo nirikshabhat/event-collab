@@ -1,0 +1,31 @@
+<mat-toolbar color="primary">
+    <span class="login-title-center">Event Collaboration System</span>
+</mat-toolbar>
+
+<div class="login-page">
+    <div class="login-spacer"></div>
+    <div class="login-container">
+        <div id="login-fab" color="accent" class="mdl-color--accent mdl-color-text--white">
+            <i id="lock-icon" class="material-icons">lock</i>
+        </div>
+        <h2 class="card-heading">
+            Login as an Organizer
+        </h2>
+        <form autocomplete="new-password" class="login-form">
+            <mat-form-field>
+                <input autocomplete="new-password" matInput placeholder="Email">
+            </mat-form-field>
+            <mat-form-field>
+                <input autocomplete="new-password" matInput type='password' placeholder="Password">
+            </mat-form-field>
+        </form>
+        <div class="buttons">
+            <div class="login">
+                <button mat-raised-button color="primary" (click)="login()">Login</button>
+            </div>
+            <div class="register">
+                <button (click)="loginAsStudent()" mat-raised-button color="accent">Login as Student</button>
+            </div>
+        </div>
+    </div>
+</div>

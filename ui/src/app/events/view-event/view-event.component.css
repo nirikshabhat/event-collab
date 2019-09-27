@@ -1,0 +1,42 @@
+table {
+    width: 100%;
+  }
+  
+  /* .search-container{
+      width:100%;
+      display: flex;
+    } */
+  
+  .events-table {
+    cursor: pointer;
+  }
+  
+  .hdr {
+    text-align: center;
+  }
+  
+  .mat-row:hover {
+    background-color: #64b5f6;
+  }
+  
+  .mat-form-field {
+    font-size: 14px;
+    width: 80%;
+  }
+  
+  .add-event-btn{
+    width: 5%;
+    float: right;
+    margin-left: 30%;
+    padding-bottom: 15px;
+  }
+  
+  .search-add-grp{
+    width: 100%;
+  }
+  
+  .search-event-inp{
+    width:60%;
+    float: left;
+  }
+  

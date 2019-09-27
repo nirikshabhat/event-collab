@@ -1,20 +1,37 @@
 <h1 mat-dialog-title>What do you have in mind?</h1>
-<mat-dialog-content>
+<mat-dialog-content class="add-event-dialog">
     <mat-form-field class="add-event-inp">
-        <input matInput [(ngModel)]="data.name" placeholder="Name">
+        <input matInput [(ngModel)]="data.event.name" placeholder="Name">
     </mat-form-field>
     <mat-form-field class="add-event-inp">
-        <input matInput [(ngModel)]="data.description" placeholder="Description">
+        <input matInput [(ngModel)]="data.event.description" placeholder="Description">
     </mat-form-field>
     <mat-form-field class="add-event-inp">
-        <input matInput [(ngModel)]="data.location" placeholder="Location">
+        <input matInput [(ngModel)]="data.event.location" placeholder="Location">
     </mat-form-field>
     <mat-form-field class="add-event-inp">
-        <input matInput [matDatepicker]="picker" [(ngModel)]="data.event_dt" placeholder="Start Date">
+        <input matInput [matDatepicker]="picker" [(ngModel)]="data.event.event_dt" placeholder="Start Date">
         <mat-datepicker-toggle matSuffix [for]="picker">
-            <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+            <mat-icon class="event-date-pkr" matDatepickerToggleIcon>event</mat-icon>
         </mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field class="add-event-inp">
+        <mat-chip-list #chipList aria-label="Interest selection">
+            <mat-chip color="accent" *ngFor="let interest of interests" [selectable]="selectable" [removable]="removable"
+                (removed)="remove(interest)">
+                {{interest}}
+                <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+            </mat-chip>
+            <input placeholder="Select an interest..." #interestInput [formControl]="interestCtrl" [matAutocomplete]="auto"
+                [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="add($event)">
+        </mat-chip-list>
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+            <mat-option *ngFor="let interest of filteredInterests | async" [value]="interest">
+                {{interest}}
+            </mat-option>
+        </mat-autocomplete>
     </mat-form-field>
 </mat-dialog-content>
 <div mat-dialog-actions>

@@ -22,4 +22,10 @@ export class EventsService {
         return await event_repo.delete_event(eventId);
     }
 
+    async get_interests() {
+        let interests = [];
+        let event_repo = new EventsRepository();
+        interests = await event_repo.get_interests();
+        return interests;
+    }
 }

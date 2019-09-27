@@ -24,18 +24,25 @@ table {
   width: 80%;
 }
 
-.add-event-btn{
+.add-event-btn {
   width: 5%;
   float: right;
-  margin-left: 30%;
+  margin-left: 10%;
   padding-bottom: 15px;
 }
 
-.search-add-grp{
+.admin-logout-btn {
+  width: 5%;
+  float: right;
+  margin-left: 5%;
+  padding-bottom: 15px;
+}
+
+.search-add-grp {
   width: 100%;
 }
 
-.search-event-inp{
-  width:60%;
+.search-event-inp {
+  width: 60%;
   float: left;
 }

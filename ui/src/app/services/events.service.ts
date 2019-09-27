@@ -22,4 +22,8 @@ export class EventsService {
     delete_event(eventId: number) {
         return this.httpClient.delete("http://localhost:3000/events/" + eventId);
     }
+
+    get_interests() {
+        return this.httpClient.get('http://localhost:3000/events/interests')
+    }
 }

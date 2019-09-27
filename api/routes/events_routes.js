@@ -1,4 +1,5 @@
 import express from 'express'
+import passport from 'passport'
 import { EventController } from '../controllers/events_controller';
 
 var router = express.Router();
@@ -14,6 +15,10 @@ router.post('/', async (req, res, next) => {
 
 router.delete('/:eventId', async (req, res, next) => {
     return await event_controller.delete_event(req, res);
+});
+
+router.get('/interests', async (req, res, next) => {
+    return await event_controller.get_interests(req, res);
 });
 
 module.exports = router;

@@ -22,5 +22,11 @@ export class EventController {
         let result = await events_service.delete_event(req.params.eventId);
         return res.json(result);
     }
+
+    async get_interests(req, res) {
+        let events_service = new EventsService();
+        let interests = await events_service.get_interests();
+        return res.json(interests);
+    }
 }
 

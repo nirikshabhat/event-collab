@@ -2,8 +2,11 @@ import express from 'express'
 import cors from 'cors';
 import * as bodyParser from 'body-parser' 
 import events_routes  from './routes/events_routes'
+import passport from 'passport'
 
 var app = express()
+
+//app.use(passport.initialize());
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())

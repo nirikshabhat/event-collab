@@ -1,22 +1,22 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
-import { Event, Interest } from '../dto'
+import { Event, Interest } from '../../dto'
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
-import { EventsService } from '../services/index';
+import { EventsService } from '../../services/index';
 import { MatSnackBar } from '@angular/material';
 import { MatDialog } from '@angular/material/dialog';
-import { AddEventComponent } from '../events/add-event/add-event.component'
+import { AddEventComponent } from '../../events/add-event/add-event.component'
 import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
-    templateUrl: 'events.component.html',
-    styleUrls: ['events.component.css']
+    templateUrl: 'view-event.component.html',
+    styleUrls: ['view-event.component.css']
 })
-export class EventsComponent implements OnInit {
+export class ViewEventComponent implements OnInit {
 
     events: Array<Event> = new Array<Event>();
-    displayedColumns: Array<string> = ['id', 'name', 'description', 'interests', 'location', 'event_dt', 'actions'];
+    displayedColumns: Array<string> = ['id', 'name', 'description', 'interests', 'location', 'event_dt','actions'];
     eventsList: any = {};
     event: Event = new Event(0, "", "", "", new Date(), [], []);
     interests: Array<Interest> = new Array<Interest>();
@@ -106,6 +106,10 @@ export class EventsComponent implements OnInit {
         this.eventsList.paginator = this.paginator;
     }
 
+    logout() {
+        this.router.navigate(['login']);
+    }
+
     addEvent() {
         const dialogRef = this.eventDialog.open(AddEventComponent, {
             data: { event: this.event, interests: this.interests }
@@ -127,9 +131,5 @@ export class EventsComponent implements OnInit {
                 this.event.reset();
             }
         });
-    }
-
-    logout(){
-        this.router.navigate(['admin']);
     }
 }

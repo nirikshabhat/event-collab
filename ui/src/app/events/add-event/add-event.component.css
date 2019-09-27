@@ -1,3 +1,11 @@
-.add-event-inp{
-    width: 100% ;
+.add-event-inp {
+    width: 100%;
+}
+
+.add-event-dialog {
+    overflow: hidden !important;
+}
+
+.event-date-pkr {
+    transform: scale(2);
 }
