@@ -1,0 +1,19 @@
+.add-event-inp {
+    width: 100%;
+}
+
+.add-event-dialog {
+    overflow: hidden !important;
+}
+
+.event-date-pkr {
+    transform: scale(2);
+}
+
+.open-event-title {
+    text-align: center !important;
+}
+
+.open-event-close-btn {
+    float: right;
+}

@@ -5,8 +5,20 @@ import { EventController } from '../controllers/events_controller';
 var router = express.Router();
 var event_controller = new EventController();
 
-router.get('/', async (req, res, next) => {
-    return await event_controller.get_events(req, res);
+router.get('/organized/chart', async (req, res, next) => {
+    return await event_controller.get_events_view(req, res);
+});
+
+router.get('/organized', async (req, res, next) => {
+    return await event_controller.get_organized_events(req, res);
+});
+
+router.get('/enrolled', async (req, res, next) => {
+    return await event_controller.get_enrolled_events(req, res);
+});
+
+router.get('/upcoming', async (req, res, next) => {
+    return await event_controller.get_upcoming_events(req, res);
 });
 
 router.post('/', async (req, res, next) => {

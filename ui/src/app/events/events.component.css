@@ -43,6 +43,22 @@ table {
 }
 
 .search-event-inp {
-  width: 60%;
+  width: 40%;
+  margin-left: 40%;
   float: left;
+}
+
+.events-title-center {
+  margin: 0 auto !important;
+  font-family: Raleway;
+}
+
+.events-container {
+  margin-top: 20px;
+}
+
+.chart-container {
+  margin-top: 3%;
+  margin-left: 20%;
+  width: 60%;
 }

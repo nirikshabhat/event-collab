@@ -4,9 +4,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { EventsComponent, AddEventComponent, ViewEventComponent } from './events/index';
+import { EventsComponent, AddEventComponent, ViewEventComponent, OpenEventComponent } from './events/index';
 import { LoginComponent } from './login/login.component';
 import { AdminLoginComponent } from './admin-login/admin-login.component';
+import { ChartsModule } from 'ng2-charts';
 
 import {
   MatAutocompleteModule,
@@ -54,9 +55,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     LoginComponent,
     ViewEventComponent,
     AdminLoginComponent,
+    OpenEventComponent,
     AddEventComponent
   ],
-  entryComponents: [AddEventComponent],
+  entryComponents: [AddEventComponent, OpenEventComponent],
   imports: [
     BrowserModule,
     FormsModule,
@@ -98,7 +100,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MatToolbarModule,
     MatTooltipModule,
     MatTreeModule,
-    HttpClientModule
+    HttpClientModule,
+    ChartsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

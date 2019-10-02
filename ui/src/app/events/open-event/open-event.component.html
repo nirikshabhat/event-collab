@@ -1,0 +1,20 @@
+<h1 class="open-event-title" mat-dialog-title>{{data.event.name}}</h1>
+<mat-dialog-content class="add-event-dialog">
+    <mat-form-field class="add-event-inp">
+        <input readonly matInput [(ngModel)]="data.event.name" placeholder="Name">
+    </mat-form-field>
+    <mat-form-field class="add-event-inp">
+        <input readonly matInput [(ngModel)]="data.event.description" placeholder="Description">
+    </mat-form-field>
+    <mat-form-field class="add-event-inp">
+        <input readonly matInput [(ngModel)]="data.event.location" placeholder="Location">
+    </mat-form-field>
+    <mat-form-field class="add-event-inp">
+        <input readonly matInput [matDatepicker]="picker" [(ngModel)]="data.event.event_dt" placeholder="Start Date">
+    </mat-form-field>
+    <mat-form-field class="add-event-inp">
+        <input readonly matInput [(ngModel)]="data.event.interest_names" placeholder="Interests">
+    </mat-form-field>
+</mat-dialog-content>
+
+<button class="open-event-close-btn" color="accent" mat-button (click)="cancelOpenEvent()">Close</button>
