@@ -25,6 +25,14 @@ router.post('/', async (req, res, next) => {
     return await event_controller.add_event(req, res);
 });
 
+router.post('/join', async (req, res, next) => {
+    return await event_controller.join_event(req, res);
+});
+
+router.post('/leave', async (req, res, next) => {
+    return await event_controller.leave_event(req, res);
+});
+
 router.delete('/:eventId', async (req, res, next) => {
     return await event_controller.delete_event(req, res);
 });

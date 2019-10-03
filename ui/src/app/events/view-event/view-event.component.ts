@@ -20,7 +20,7 @@ export class ViewEventComponent implements OnInit, AfterViewInit {
     displayedColumns: Array<string> = ['id', 'name', 'description', 'interests', 'location', 'event_dt', 'actions'];
     enrolledEventsList: any = [];
     upcomingEventsList: any = [];
-    event: Event = new Event(0, "", "", "", new Date(), [], []);
+    event: Event = new Event(0, "", "", "", new Date(), [], [], "");
     interests: Array<Interest> = new Array<Interest>();
     user: User = new User(0, '', '', '', 0, '', 0, '');
 
@@ -51,7 +51,7 @@ export class ViewEventComponent implements OnInit, AfterViewInit {
         else {
             this.eventsService.get_enrolled_events().subscribe((data: Array<Event>) => {
                 data.forEach((event) => {
-                    this.enrolled_events.push(new Event(event.id, event.name, event.description, event.location, event.event_dt, event.interest_ids, event.interest_names));
+                    this.enrolled_events.push(new Event(event.id, event.name, event.description, event.location, event.event_dt, event.interest_ids, event.interest_names, event.organizers));
                 });
 
                 this.enrolledEventsList = new MatTableDataSource<Event>(this.enrolled_events);
@@ -71,7 +71,7 @@ export class ViewEventComponent implements OnInit, AfterViewInit {
             this.eventsService.get_upcoming_events().subscribe((data: Array<Event>) => {
 
                 data.forEach((event) => {
-                    this.upcoming_events.push(new Event(event.id, event.name, event.description, event.location, event.event_dt, event.interest_ids, event.interest_names));
+                    this.upcoming_events.push(new Event(event.id, event.name, event.description, event.location, event.event_dt, event.interest_ids, event.interest_names, event.organizers));
                 });
 
                 this.upcomingEventsList = new MatTableDataSource<Event>(this.upcoming_events);
@@ -96,7 +96,7 @@ export class ViewEventComponent implements OnInit, AfterViewInit {
         this.upcomingEventsList = [];
         this.eventsService.get_enrolled_events().subscribe((data: Array<Event>) => {
             data.forEach((event) => {
-                this.enrolled_events.push(new Event(event.id, event.name, event.description, event.location, event.event_dt, [], []));
+                this.enrolled_events.push(new Event(event.id, event.name, event.description, event.location, event.event_dt, [], [], event.organizers));
             });
             this.enrolledEventsList = new MatTableDataSource<Event>(this.enrolled_events);
             this.enrolledEventsList.sort = this.sortEnrolled;
@@ -104,7 +104,7 @@ export class ViewEventComponent implements OnInit, AfterViewInit {
         });;
         this.eventsService.get_upcoming_events().subscribe((data: Array<Event>) => {
             data.forEach((event) => {
-                this.upcoming_events.push(new Event(event.id, event.name, event.description, event.location, event.event_dt, [], []));
+                this.upcoming_events.push(new Event(event.id, event.name, event.description, event.location, event.event_dt, [], [], event.organizers));
             });
             this.upcomingEventsList = new MatTableDataSource<Event>(this.upcoming_events);
             this.upcomingEventsList.sort = this.sortUpcoming;
@@ -134,7 +134,7 @@ export class ViewEventComponent implements OnInit, AfterViewInit {
             else {
                 this.displayInfo("Failure deleting event", "Failure")
             }
-        });;
+        });
     }
 
     displayInfo(message: string, action: string) {
@@ -168,6 +168,32 @@ export class ViewEventComponent implements OnInit, AfterViewInit {
                 this.event = result.event;
             } else {
                 this.event.reset();
+            }
+        });
+    }
+
+    joinEvent(event) {
+        this.eventsService.join_event(event).subscribe((result: boolean) => {
+            if (result) {
+                this.event.reset();
+                let successmessage = "Successfully Enrolled to - " + event.name;
+                this.router.navigate(['dashboard'], { queryParams: { message: successmessage }, preserveQueryParams: false });
+            }
+            else {
+                this.displayInfo("Failure joining event", "Failure")
+            }
+        });
+    }
+
+    leaveEvent(event) {
+        this.eventsService.leave_event(event).subscribe((result: boolean) => {
+            if (result) {
+                this.event.reset();
+                let successmessage = "Successfully left - " + event.name;
+                this.router.navigate(['dashboard'], { queryParams: { message: successmessage }, preserveQueryParams: false });
+            }
+            else {
+                this.displayInfo("Failure leaving event", "Failure")
             }
         });
     }

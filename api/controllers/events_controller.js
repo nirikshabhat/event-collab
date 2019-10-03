@@ -34,9 +34,23 @@ export class EventController {
     }
 
     async add_event(req, res) {
-        let user = req.header("current_user");
+        let user = req.header("current_organizer");
         let events_service = new EventsService();
         let result = await events_service.add_event(req.body, user);
+        return res.json(result);
+    }
+
+    async join_event(req, res) {
+        let user = req.header("current_user");
+        let events_service = new EventsService();
+        let result = await events_service.join_event(req.body, user);
+        return res.json(result);
+    }
+
+    async leave_event(req, res) {
+        let user = req.header("current_user");
+        let events_service = new EventsService();
+        let result = await events_service.leave_event(req.body, user);
         return res.json(result);
     }
 

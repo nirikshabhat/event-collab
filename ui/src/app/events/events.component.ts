@@ -8,6 +8,7 @@ import { MatSnackBar } from '@angular/material';
 import { MatDialog } from '@angular/material/dialog';
 import { AddEventComponent } from '../events/add-event/add-event.component'
 import { Router, ActivatedRoute } from '@angular/router';
+import { OpenEventComponent } from '../events/open-event/open-event.component'
 
 @Component({
     templateUrl: 'events.component.html',
@@ -20,7 +21,7 @@ export class EventsComponent implements OnInit {
 
     displayedColumns: Array<string> = ['id', 'name', 'description', 'interests', 'location', 'event_dt', 'actions'];
     eventsList: any = {};
-    event: Event = new Event(0, "", "", "", new Date(), [], []);
+    event: Event = new Event(0, "", "", "", new Date(), [], [], "");
     interests: Array<Interest> = new Array<Interest>();
     user: User = new User(0, '', '', '', 0, '', 0, '');
 
@@ -72,7 +73,7 @@ export class EventsComponent implements OnInit {
 
         this.eventsService.get_organized_events().subscribe((data: Array<Event>) => {
             data.forEach((event) => {
-                this.events.push(new Event(event.id, event.name, event.description, event.location, event.event_dt, event.interest_ids, event.interest_names));
+                this.events.push(new Event(event.id, event.name, event.description, event.location, event.event_dt, event.interest_ids, event.interest_names, event.organizers, event.students));
             });
             this.eventsList = new MatTableDataSource<Event>(this.events);
             this.eventsList.sort = this.sort;
@@ -108,7 +109,7 @@ export class EventsComponent implements OnInit {
         this.eventsList = [];
         this.eventsService.get_organized_events().subscribe((data: Array<Event>) => {
             data.forEach((event) => {
-                this.events.push(new Event(event.id, event.name, event.description, event.location, event.event_dt, [], []));
+                this.events.push(new Event(event.id, event.name, event.description, event.location, event.event_dt, [], [], event.organizers,event.students));
             });
             this.eventsList = new MatTableDataSource<Event>(this.events);
             this.eventsList.sort = this.sort;
@@ -128,8 +129,9 @@ export class EventsComponent implements OnInit {
     deleteEvent(ev) {
         this.eventsService.delete_event(ev.id).subscribe((result: boolean) => {
             if (result) {
+                let successmessage = "Event - " + ev.name + " was deleted";
                 this.event.reset();
-                this.router.navigate(['events'], { queryParams: { message: "Event was deleted" }, preserveQueryParams: false });
+                this.router.navigate(['events'], { queryParams: { message: successmessage }, preserveQueryParams: false });
             }
             else {
                 this.displayInfo("Failure deleting event", "Failure")
@@ -159,8 +161,9 @@ export class EventsComponent implements OnInit {
                 this.event = result.event;
                 this.eventsService.add_event(this.event).subscribe((result: boolean) => {
                     if (result) {
+                        let successmessage = "Event - " + this.event.name + " added successfully";
                         this.event.reset();
-                        this.router.navigate(['events'], { queryParams: { message: "Event added successfully" }, preserveQueryParams: false });
+                        this.router.navigate(['events'], { queryParams: { message: successmessage }, preserveQueryParams: false });
                     }
                     else {
                         this.displayInfo("Failure adding event", "Failure")
@@ -183,5 +186,19 @@ export class EventsComponent implements OnInit {
 
     public chartHovered(e: any): void {
         console.log(e);
+    }
+
+    openEvent(ev) {
+        const dialogRef = this.eventDialog.open(OpenEventComponent, {
+            data: { event: ev, interests: this.interests }
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            if (!result.isCancelled) {
+                this.event = result.event;
+            } else {
+                this.event.reset();
+            }
+        });
     }
 }

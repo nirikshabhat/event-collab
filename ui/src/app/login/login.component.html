@@ -13,11 +13,11 @@
         </h2>
         <form autocomplete="new-password" class="login-form">
             <mat-form-field>
-                <input [(ngModel)]="user.username" name="username" autocomplete="new-password" matInput
+                <input required email [(ngModel)]="user.username" name="username" autocomplete="new-password" matInput
                     placeholder="Email">
             </mat-form-field>
             <mat-form-field>
-                <input [(ngModel)]="user.password" name="password" autocomplete="new-password" matInput type='password'
+                <input required minlength="10" [(ngModel)]="user.password" name="password" autocomplete="new-password" matInput type='password'
                     placeholder="Password">
             </mat-form-field>
         </form>

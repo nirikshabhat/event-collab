@@ -6,8 +6,10 @@ export class Event {
     event_dt = '';
     interest_ids = [];
     interest_names = [];
+    organizers = "";
+    students = "";
 
-    constructor(event_id, event_name, event_desc, event_loc, event_date, interest_ids, interest_names) {
+    constructor(event_id, event_name, event_desc, event_loc, event_date, interest_ids, interest_names, organizers, students = "") {
         this.id = event_id;
         this.name = event_name;
         this.description = event_desc;
@@ -15,5 +17,7 @@ export class Event {
         this.event_dt = event_date;
         this.interest_ids = interest_ids;
         this.interest_names = interest_names;
+        this.organizers = organizers;
+        this.students = students;
     }
 }

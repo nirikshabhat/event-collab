@@ -13,6 +13,7 @@ module.exports = {
           database : db_config.database
         });
         pool.query = util.promisify(pool.query);
+        pool.releaseConnection = util.promisify(pool.releaseConnection);
         return pool;
       }
 }

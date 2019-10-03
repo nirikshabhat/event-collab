@@ -1,4 +1,4 @@
-<mat-toolbar color="primary">
+<mat-toolbar color="accent">
     <span class="events-title-center">Upcoming Events</span>
     <span>{{user.name}}</span>
     <mat-menu #appMenu="matMenu">
@@ -69,10 +69,14 @@
                 <ng-container matColumnDef="actions">
                     <th mat-header-cell *matHeaderCellDef> Action </th>
 
-                    <td mat-cell *matCellDef="let element" (click)="deleteEvent(element)">
+                    <td mat-cell *matCellDef="let element">
                         <button mat-icon-button color="warn">
                             <mat-icon aria-label="delete an event">delete</mat-icon>
                         </button>
+                        <button (click)="openEvent(element)" mat-icon-button color="primary">
+                            <mat-icon aria-label="View an event">remove_red_eye</mat-icon>
+                        </button>
+                    </td>
                 </ng-container>
 
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

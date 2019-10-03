@@ -38,6 +38,16 @@ export class EventsService {
         return await event_repo.add_event(event, user);
     }
 
+    async join_event(event, user) {
+        let event_repo = new EventsRepository();
+        return await event_repo.join_event(event, user);
+    }
+
+    async leave_event(event, user) {
+        let event_repo = new EventsRepository();
+        return await event_repo.leave_event(event, user);
+    }
+
     async delete_event(eventId, user) {
         let event_repo = new EventsRepository();
         return await event_repo.delete_event(eventId, user);

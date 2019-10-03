@@ -61,6 +61,14 @@ export class EventsService {
     }
 
     get_interests() {
-        return this.get('http://localhost:3000/events/interests')
+        return this.get('http://localhost:3000/events/interests');
+    }
+
+    join_event(event: Event) {
+        return this.post('http://localhost:3000/events/join', event);
+    }
+
+    leave_event(event: Event) {
+        return this.post('http://localhost:3000/events/leave', event);
     }
 }
