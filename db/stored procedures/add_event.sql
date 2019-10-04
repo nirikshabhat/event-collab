@@ -20,7 +20,7 @@ BEGIN
   INSERT INTO EVENTS (name,description,location,event_date) VALUES (event_name,event_description,event_location,event_date);
   SET @event_id= ( SELECT LAST_INSERT_ID() );
 
-  INSERT INTO ORGANIZER_EVENT_MAP (organizer_id,event_id) values (org_id,event_id);
+  INSERT INTO ORGANIZER_EVENT_MAP (organizer_id,event_id) values (org_id,@event_id);
 
 iterator:LOOP
   -- exit the loop if the list seems empty or was null;

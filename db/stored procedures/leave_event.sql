@@ -9,7 +9,7 @@ CREATE PROCEDURE leave_event(
 )
 BEGIN	
 
-  INSERT INTO STUDENT_EVENT_MAP (student_id,event_id) values (sid,eid);
+  DELETE FROM STUDENT_EVENT_MAP where student_id=sid and event_id=eid;
 
 END
 

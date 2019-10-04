@@ -11,4 +11,6 @@ BEGIN
 
   INSERT INTO STUDENT_EVENT_MAP (student_id,event_id) values (student_id,event_id);
 
+END
+
 // DELIMITER ;
