@@ -159,6 +159,7 @@ export class EventsComponent implements OnInit {
         dialogRef.afterClosed().subscribe(result => {
             if (!result.isCancelled) {
                 this.event = result.event;
+                console.log(this.event);
                 this.eventsService.add_event(this.event).subscribe((result: boolean) => {
                     if (result) {
                         let successmessage = "Event - " + this.event.name + " added successfully";

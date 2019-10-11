@@ -1,6 +1,6 @@
 {
     "connection_limit":100,
-    "host":"localhost",
+    "host":"127.0.0.1",
     "user":"event_collab_user",
     "password":"event_collab_user@1234",
     "database":"collab_event",

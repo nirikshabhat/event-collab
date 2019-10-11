@@ -23,6 +23,7 @@ export class EventsRepository {
             if (row.event_id > 0)
                 events.push(new EventView(row.event_id, row.name, row.student_count, row.student_names))
         });
+        pool.releaseConnection();
         return events;
     }
 
@@ -99,6 +100,7 @@ export class EventsRepository {
             if (row.id > 0)
                 events.push(new Event(row.id, row.name, row.description, row.location, row.event_date, row.interest_ids, row.interest_names, row.organizers))
         });
+        pool.releaseConnection();
         return events;
     }
 
@@ -108,10 +110,13 @@ export class EventsRepository {
         if (event == null)
             return false;
         let pool = db.getConnection();
+        console.log(event.event_dt);
         let dateVal = new Date(Date.parse(event.event_dt));
-        dateVal = dateVal.getFullYear() + "-" + dateVal.getMonth() + "-" + dateVal.getDate();
+        dateVal = dateVal.getFullYear() + "-" + (dateVal.getMonth()+1) + "-" + dateVal.getDate();
+        console.log(dateVal);
         let addQuery = `call add_event (${currentUser.id},'${event.name}', '${event.description}', '${event.location}', '${dateVal}','${event.interest_ids}',@event_id)`;
         var result = await pool.query(addQuery)
+        pool.releaseConnection();
         return true;
     }
 
@@ -122,6 +127,7 @@ export class EventsRepository {
         let pool = db.getConnection();
         let addQuery = `call join_event (${currentUser.id},${event.id})`;
         var result = await pool.query(addQuery)
+        pool.releaseConnection();
         return true;
     }
 
@@ -132,13 +138,16 @@ export class EventsRepository {
         let pool = db.getConnection();
         let addQuery = `call leave_event (${currentUser.id},${event.id})`;
         var result = await pool.query(addQuery)
+        pool.releaseConnection();
         return true;
     }
 
     async delete_event(eventId, user) {
+        console.log("leave");
         let deleteQuery = `call delete_event (${eventId})`;
         let pool = db.getConnection();
         var result = await pool.query(deleteQuery);
+        pool.releaseConnection();
         return true;
     }
 
@@ -149,6 +158,7 @@ export class EventsRepository {
         rows.forEach(row => {
             interests.push(new Interest(row.id, row.name));
         });
+        pool.releaseConnection();
         return interests;
     }
 
