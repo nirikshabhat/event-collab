@@ -13,6 +13,10 @@ router.get('/organized', async (req, res, next) => {
     return await event_controller.get_organized_events(req, res);
 });
 
+router.get('/organized/history', async (req, res, next) => {
+    return await event_controller.get_registration_history(req, res);
+});
+
 router.get('/enrolled', async (req, res, next) => {
     return await event_controller.get_enrolled_events(req, res);
 });

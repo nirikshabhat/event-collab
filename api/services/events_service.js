@@ -26,6 +26,13 @@ export class EventsService {
         return events;
     }
 
+    async get_registration_history(user) {
+        let history = [];
+        let event_repo = new EventsRepository();
+        history = await event_repo.get_registration_history(user);
+        return history;
+    }
+
     async get_upcoming_events(user) {
         let events = [];
         let event_repo = new EventsRepository();

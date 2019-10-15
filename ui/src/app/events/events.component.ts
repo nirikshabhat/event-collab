@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
-import { Event, Interest, User, EventsView, } from '../dto'
+import { Event, Interest, User, EventsView, RegistrationHistory } from '../dto'
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { EventsService, AuthService } from '../services/index';
@@ -18,9 +18,14 @@ export class EventsComponent implements OnInit {
 
     events: Array<Event> = new Array<Event>();
     eventsView: Array<EventsView> = new Array<EventsView>();
+    history: Array<RegistrationHistory> = new Array<RegistrationHistory>();
 
     displayedColumns: Array<string> = ['id', 'name', 'description', 'interests', 'location', 'event_dt', 'actions'];
-    eventsList: any = {};
+    displayedHistoryColumns: Array<string> = ['student_name', 'event_name', 'usn', 'status', 'college', 'updated_dt', 'department'];
+
+    eventsList: any = [];
+    historyList: any = [];
+
     event: Event = new Event(0, "", "", "", new Date(), [], [], "");
     interests: Array<Interest> = new Array<Interest>();
     user: User = new User(0, '', '', '', 0, '', 0, '');
@@ -61,13 +66,18 @@ export class EventsComponent implements OnInit {
         this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     }
 
-    @ViewChild(MatSort, { static: true }) sort: MatSort;
-    @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+    @ViewChild('eventsSort', { static: true }) eventsSort: MatSort;
+    @ViewChild('historySort', { static: true }) historySort: MatSort;
+    @ViewChild('eventsPginator', { static: true }) eventsPginator: MatPaginator;
+    @ViewChild('historyPaginator', { static: true }) historyPaginator: MatPaginator;
 
     ngOnInit() {
 
 
         this.user = this.authService.getCurrentOrganizer();
+        this.eventsList = new MatTableDataSource<Event>([]);
+        this.historyList = new MatTableDataSource<RegistrationHistory>([]);
+
         if (this.user == null || this.user.id <= 0)
             this.router.navigate(['admin']);
 
@@ -76,8 +86,8 @@ export class EventsComponent implements OnInit {
                 this.events.push(new Event(event.id, event.name, event.description, event.location, event.event_dt, event.interest_ids, event.interest_names, event.organizers, event.students));
             });
             this.eventsList = new MatTableDataSource<Event>(this.events);
-            this.eventsList.sort = this.sort;
-            this.eventsList.paginator = this.paginator;
+            this.eventsList.sort = this.eventsSort;
+            this.eventsList.paginator = this.eventsPginator;
 
             this.route.queryParams.subscribe(params => {
                 let message = params['message'];
@@ -86,6 +96,16 @@ export class EventsComponent implements OnInit {
             });
 
             this.router.navigate(['.'], { relativeTo: this.route, queryParams: {} });
+
+        });
+
+        this.eventsService.get_organized_events_registration_history().subscribe((data: Array<RegistrationHistory>) => {
+            data.forEach((row) => {
+                this.history.push(new RegistrationHistory(row.student_name, row.usn, row.event_name, row.registration_status, row.college_name, row.department_name, row.updated_dt));
+            });
+            this.historyList = new MatTableDataSource<RegistrationHistory>(this.history);
+            this.historyList.sort = this.historySort;
+            this.historyList.paginator = this.historyPaginator;
 
         });
 
@@ -109,11 +129,11 @@ export class EventsComponent implements OnInit {
         this.eventsList = [];
         this.eventsService.get_organized_events().subscribe((data: Array<Event>) => {
             data.forEach((event) => {
-                this.events.push(new Event(event.id, event.name, event.description, event.location, event.event_dt, [], [], event.organizers,event.students));
+                this.events.push(new Event(event.id, event.name, event.description, event.location, event.event_dt, [], [], event.organizers, event.students));
             });
             this.eventsList = new MatTableDataSource<Event>(this.events);
-            this.eventsList.sort = this.sort;
-            this.eventsList.paginator = this.paginator;
+            this.eventsList.sort = this.eventsSort;
+            this.eventsList.paginator = this.eventsPginator;
         });;
     }
 
@@ -121,9 +141,13 @@ export class EventsComponent implements OnInit {
         this.eventsList.filter = filterValue.trim().toLowerCase();
     }
 
+    applyHistoryFilter(filterValue: string) {
+        this.historyList.filter = filterValue.trim().toLowerCase();
+    }
+
     ngAfterViewInit() {
-        this.eventsList.sort = this.sort;
-        this.eventsList.paginator = this.paginator;
+        this.eventsList.paginator = this.eventsPginator;
+        this.historyList.paginator = this.historyPaginator;
     }
 
     deleteEvent(ev) {
@@ -147,8 +171,8 @@ export class EventsComponent implements OnInit {
 
     reloadUsers() {
         this.eventsList = new MatTableDataSource<Event>(this.events);
-        this.eventsList.sort = this.sort;
-        this.eventsList.paginator = this.paginator;
+        this.eventsList.sort = this.eventsSort;
+        this.eventsList.paginator = this.eventsPginator;
     }
 
     addEvent() {

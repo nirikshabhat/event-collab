@@ -26,6 +26,13 @@ export class EventController {
         return res.json(events);
     }
 
+    async get_registration_history(req, res) {
+        let user = req.header("current_organizer");
+        let events_service = new EventsService();
+        let rh = await events_service.get_registration_history(user);
+        return res.json(rh);
+    }
+
     async get_upcoming_events(req, res) {
         let user = req.header("current_user");
         let events_service = new EventsService();

@@ -48,6 +48,10 @@ export class EventsService {
         return this.get("http://localhost:3000/events/organized");
     }
 
+    get_organized_events_registration_history() {
+        return this.get("http://localhost:3000/events/organized/history");
+    }
+
     get_enrolled_events() {
         return this.get("http://localhost:3000/events/enrolled");
     }

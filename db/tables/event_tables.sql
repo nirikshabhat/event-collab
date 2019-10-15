@@ -53,3 +53,12 @@ create table organizer_event_map (id int auto_increment,
                         foreign key (event_id) references events(id),
                         primary key (id)
                         )
+
+create table registration_history(id int auto_increment,
+								student_id int not null,
+                                event_id int not null,
+                                registration_status varchar(50) not null,
+                                updated_dt datetime not null,
+                                primary key (id),
+                                foreign key (student_id) references students(id),
+                                foreign key(event_id) references events(id))

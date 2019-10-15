@@ -29,8 +29,8 @@
             </div>
 
 
-            <table color="primary" mat-table [dataSource]="eventsList" mat-paginator matSort matSortDirection="asc"
-                class="events-table mat-elevation-z8">
+            <table color="primary" mat-table [dataSource]="eventsList" mat-paginator matSort #eventsSort="matSort"
+                matSortDirection="asc" class="events-table mat-elevation-z8">
 
                 <ng-container matColumnDef="id">
                     <th mat-header-cell *matHeaderCellDef> Ev Id </th>
@@ -87,7 +87,8 @@
         </div>
 
         <div class="footer">
-            <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+            <mat-paginator #eventsPginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons>
+            </mat-paginator>
         </div>
 
     </mat-tab>
@@ -98,5 +99,73 @@
                 (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"
                 [colors]="pieChartColors"></canvas>
         </div>
+    </mat-tab>
+    <mat-tab label="Events History">
+
+        <div class="events-container">
+
+            <div class="search-add-grp">
+                <div class="search-event-inp">
+                    <mat-form-field>
+                        <input matInput (keyup)="applyHistoryFilter($event.target.value)"
+                            placeholder="Search for an event">
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <table color="primary" mat-table [dataSource]="historyList" #historySort mat-paginator matSort
+                #historySort="matSort" matSortDirection="asc" class="events-table mat-elevation-z8">
+
+                <ng-container matColumnDef="event_name">
+                    <th mat-header-cell mat-cell-eventname *matHeaderCellDef mat-sort-header> Event name </th>
+                    <td mat-cell mat-cell-eventname *matCellDef="let element"> {{element.event_name}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="student_name">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Student Name </th>
+                    <td mat-cell *matCellDef="let element"> {{element.student_name}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="usn">
+                    <th mat-header-cell mat-cell-eventname *matHeaderCellDef> USN </th>
+                    <td mat-cell mat-cell-eventname *matCellDef="let element" class="mat-column-desc">
+                        {{element.usn}}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="status">
+                    <th mat-header-cell mat-cell-eventname *matHeaderCellDef mat-sort-header> Status </th>
+                    <td mat-cell mat-cell-eventname *matCellDef="let element" class="mat-column-desc">
+                        {{element.registration_status}}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="college">
+                    <th mat-header-cell *matHeaderCellDef> College </th>
+                    <td mat-cell *matCellDef="let element"> {{element.college_name}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="department">
+                    <th mat-header-cell *matHeaderCellDef> Department </th>
+                    <td mat-cell *matCellDef="let element"> {{element.department_name}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="updated_dt">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Date </th>
+                    <td mat-cell *matCellDef="let element"> {{element.updated_dt | date:'MMM d, y'}} </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedHistoryColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedHistoryColumns;"></tr>
+
+            </table>
+
+        </div>
+
+        <div class="footer">
+            <mat-paginator #historyPaginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons>
+            </mat-paginator>
+        </div>
+
     </mat-tab>
 </mat-tab-group>

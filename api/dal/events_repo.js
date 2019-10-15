@@ -2,6 +2,7 @@ import { Event } from '../models/event'
 import { EventView } from '../models/event-view'
 import { Interest } from '../models/interest'
 import * as db from "../dal/mysql_db";
+import { RegistrationHistory } from '../models/registration_history';
 
 export class EventsRepository {
 
@@ -31,27 +32,55 @@ export class EventsRepository {
         let currentUser = JSON.parse(user);
         let events = [];
         let pool = db.getConnection();
-        let ev_query = `select ev.id,ev.name,ev.description,ev.location,ev.event_date,GROUP_CONCAT(intr.id) as interest_ids,GROUP_CONCAT(intr.name) as interest_names,GROUP_CONCAT(s.name) as students from events as ev
-        inner join event_interest_map as eim
-        on ev.id=eim.event_id
-        inner join interests as intr
-        on intr.id=eim.interest_id
-        inner join organizer_event_map oe
+        let ev_query = `select ev.id,ev.name,ev.description,ev.location,ev.event_date,GROUP_CONCAT(intr.id) as interest_ids,GROUP_CONCAT(intr.name) as interest_names,GROUP_CONCAT(s.name) as students from 
+        organizer_event_map oe 
+        left join events as ev
         on oe.event_id=ev.id
-        inner join student_event_map se
+        left join event_interest_map as eim
+        on ev.id=eim.event_id
+        left join interests as intr
+        on intr.id=eim.interest_id
+        left join student_event_map se
         on se.event_id=ev.id
-        inner join students s
+        left join students s
         on s.id=se.student_id
         where oe.organizer_id=${currentUser.id}
         group by ev.id`;
         var rows = await pool.query(ev_query);
-        
         rows.forEach(row => {
             if (row.id > 0)
-                events.push(new Event(row.id, row.name, row.description, row.location, row.event_date, row.interest_ids, row.interest_names,"",row.students))
+                events.push(new Event(row.id, row.name, row.description, row.location, row.event_date, row.interest_ids, row.interest_names, "", row.students))
         });
         pool.releaseConnection();
         return events;
+    }
+
+    async get_registration_history(user) {
+        let currentUser = JSON.parse(user);
+        let history = [];
+        let pool = db.getConnection();
+        let rg_query = `select rh.id, s.name as student_name ,rh.registration_status,e.name as event_name,rh.updated_dt,c.name as college_name,d.name as department_name,s.usn from organizer_event_map oem
+        left join registration_history rh
+        on oem.event_id = rh.event_id
+        inner join students s
+        on s.id=rh.student_id
+        inner join colleges c
+        on c.id=s.college_id
+        inner join departments d
+        on d.id=s.department_id
+        inner join events e
+        on e.id=rh.event_id
+        where oem.organizer_id=${currentUser.id}
+        order by rh.updated_dt desc`;
+        console.log
+        var rows = await pool.query(rg_query);
+
+        rows.forEach(row => {
+            if (row.id > 0)
+                history.push(new RegistrationHistory(row.student_name, row.usn, row.event_name, row.registration_status, row.college_name, row.department_name, row.updated_dt))
+        });
+        pool.releaseConnection();
+        return history;
     }
 
     async get_enrolled_events(user) {
@@ -112,7 +141,7 @@ export class EventsRepository {
         let pool = db.getConnection();
         console.log(event.event_dt);
         let dateVal = new Date(Date.parse(event.event_dt));
-        dateVal = dateVal.getFullYear() + "-" + (dateVal.getMonth()+1) + "-" + dateVal.getDate();
+        dateVal = dateVal.getFullYear() + "-" + (dateVal.getMonth() + 1) + "-" + dateVal.getDate();
         console.log(dateVal);
         let addQuery = `call add_event (${currentUser.id},'${event.name}', '${event.description}', '${event.location}', '${dateVal}','${event.interest_ids}',@event_id)`;
         var result = await pool.query(addQuery)
