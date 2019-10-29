@@ -1,24 +1,23 @@
-<mat-toolbar color="primary">
-    <span class="login-title-center">Event Collaboration System</span>
-</mat-toolbar>
-
-<div class="login-page">
-    <div class="login-spacer"></div>
+<div class="login-page bg">
+    <mat-toolbar class="loginheader">
+        <span class="login-title-center">Event Collaboration System</span>
+    </mat-toolbar>
+    <!-- <div class="login-spacer"></div> -->
     <div class="login-container">
         <div id="login-fab" class="mdl-color--accent mdl-color-text--white">
             <i id="lock-icon" class="material-icons">lock</i>
         </div>
-        <h2 class="card-heading">
-            Login as Student
+        <h2 class="card-heading turqheading">
+            <b> Login as Student </b>
         </h2>
         <form autocomplete="new-password" class="login-form">
             <mat-form-field>
-                <input required email [(ngModel)]="user.username" name="username" autocomplete="new-password" matInput
-                    placeholder="Email">
+                <input class="turqplaceholder" autofocus cdkFocusInitial required email [(ngModel)]="user.username"
+                    name="username" autocomplete="new-password" matInput placeholder="Email">
             </mat-form-field>
             <mat-form-field>
-                <input required minlength="10" [(ngModel)]="user.password" name="password" autocomplete="new-password" matInput type='password'
-                    placeholder="Password">
+                <input required minlength="10" cdkFocusInitial [(ngModel)]="user.password" name="password"
+                    autocomplete="new-password" matInput type='password' placeholder="Password">
             </mat-form-field>
         </form>
         <div class="buttons">

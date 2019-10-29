@@ -11,7 +11,8 @@ import { MatSnackBar } from '@angular/material';
 })
 export class LoginComponent implements OnInit {
     user: User = new User(0, '', '', '', 0, '', 0, '');
-
+    backgroundUrl="./asssets/Mike.jfif";
+    
     constructor(private router: Router,
         private route: ActivatedRoute,
         private snackBar: MatSnackBar,

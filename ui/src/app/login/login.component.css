@@ -1,6 +1,7 @@
 .login-page {
-    height: 100vh;
+    height: 98vh;
     width: 100%;
+    overflow-y: hidden !important;
 }
 
 .login-spacer {
@@ -11,6 +12,8 @@
     margin: auto;
     width: 300px;
     padding: 2vh;
+    margin-left: 65%;
+    margin-top: 10%;
     background-color: #fff;
 }
 
@@ -62,5 +65,30 @@
 
 .login-title-center {
     margin: 0 auto;
-    font-family: Raleway;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.bg {
+    background: url('../../assets/Mike.jfif') no-repeat center;
+    background-size: 100% 100%;
+    background-attachment: fixed;
+    overflow-y: hidden;
+    opacity: 0.8;
+}
+
+.turqheading {
+    color: mediumturquoise;
+}
+
+.turqplaceholder {
+    /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: mediumturquoise !important;
+    max-width: 300px;
+}
+
+.loginheader {
+    background: border-box !important;
+    color: white;
+    font-size: 50px;
+    margin-top: 15px;
 }
