@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
-import { Event, Interest, User, EventsView, RegistrationHistory } from '../dto'
+import { Event, Interest, User, EventsView, RegistrationHistory, College, Department } from '../dto'
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { EventsService, AuthService } from '../services/index';
@@ -9,6 +9,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { AddEventComponent } from '../events/add-event/add-event.component'
 import { Router, ActivatedRoute } from '@angular/router';
 import { OpenEventComponent } from '../events/open-event/open-event.component'
+import { FormGroup, FormControl, Validators, NgForm } from '@angular/forms'
+import { MatTabChangeEvent } from '@angular/material';
 
 @Component({
     templateUrl: 'events.component.html',
@@ -19,12 +21,26 @@ export class EventsComponent implements OnInit {
     events: Array<Event> = new Array<Event>();
     eventsView: Array<EventsView> = new Array<EventsView>();
     history: Array<RegistrationHistory> = new Array<RegistrationHistory>();
-
+    newUser: User = new User(0, '', '', '', 0, '', 0, '');
     displayedColumns: Array<string> = ['id', 'name', 'description', 'interests', 'location', 'event_dt', 'actions'];
     displayedHistoryColumns: Array<string> = ['student_name', 'event_name', 'usn', 'status', 'college', 'updated_dt', 'department'];
-
+    colleges: Array<College> = new Array<College>();
+    departments: Array<Department> = new Array<Department>();
     eventsList: any = [];
     historyList: any = [];
+
+    registerform: FormGroup = new FormGroup({
+        name: new FormControl('', [Validators.required]),
+        username: new FormControl('', [Validators.required]),
+        usn: new FormControl('', [Validators.required]),
+        password: new FormControl('', [Validators.required]),
+        college_id: new FormControl(''),
+        department_id: new FormControl(''),
+    });
+
+    _initialFormValue = this.registerform.valid;
+
+    @ViewChild('formDirective', { static: true }) private formDirective: NgForm;
 
     event: Event = new Event(0, "", "", "", new Date(), [], [], "");
     interests: Array<Interest> = new Array<Interest>();
@@ -121,7 +137,21 @@ export class EventsComponent implements OnInit {
             data.forEach((interest) => {
                 this.interests.push(new Interest(interest.id, interest.name));
             });
-        });;
+        });
+
+        this.authService.get_colleges().subscribe((data: Array<College>) => {
+            data.forEach((college) => {
+                this.colleges.push(new College(college.id, college.name));
+            });
+            this.newUser.college_id = this.colleges[0].id;
+        });
+
+        this.authService.get_departments().subscribe((data: Array<Department>) => {
+            data.forEach((department) => {
+                this.departments.push(new Department(department.id, department.name));
+            });
+            this.newUser.department_id = this.departments[0].id;
+        });
     }
 
     getUsers() {
@@ -225,5 +255,34 @@ export class EventsComponent implements OnInit {
                 this.event.reset();
             }
         });
+    }
+
+    register() {
+        console.log(this.newUser);
+        this.authService.register(this.newUser).subscribe((returncode) => {
+            if (returncode > 0) {
+                this.newUser.reset();
+                this.formDirective.reset();
+                this.newUser.department_id = this.departments[0].id;
+                this.newUser.college_id = this.colleges[0].id;
+                this.displayInfo("User Registered successfully", "Success");
+            }
+            else if (returncode == -1) {
+                this.displayInfo("A student with USN " + this.newUser.usn + " is already present", "Failure");
+            }
+            else if (returncode == -2) {
+                this.displayInfo("A student with email address " + this.newUser.username + " is already present", "Failure");
+            }
+            else {
+                this.displayInfo("An error occured!!", "Failure");
+            }
+        });;
+    }
+
+    onEventtabChange(event: MatTabChangeEvent) {
+        this.newUser.reset();
+        this.newUser.department_id = this.departments[0].id;
+        this.newUser.college_id = this.colleges[0].id;
+        this.formDirective.reset();
     }
 }

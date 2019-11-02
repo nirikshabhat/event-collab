@@ -11,7 +11,7 @@
     </button>
 </mat-toolbar>
 
-<mat-tab-group mat-stretch-tabs>
+<mat-tab-group mat-stretch-tabs (selectedTabChange)="onEventtabChange($event)">
     <mat-tab label="Upcoming Events">
 
         <div class="events-container">
@@ -167,5 +167,48 @@
             </mat-paginator>
         </div>
 
+    </mat-tab>
+    <mat-tab label="Add Student">
+        <div class="register-form" [formGroup]="registerform">
+            <form autocomplete="new-password" #formDirective="ngForm">
+                <mat-form-field>
+                    <input required [(ngModel)]="newUser.name" name="name" autocomplete="new-password" matInput
+                        placeholder="Student Name">
+                </mat-form-field>
+                <mat-form-field>
+                    <input required email [(ngModel)]="newUser.username" name="username" autocomplete="new-password"
+                        matInput placeholder="Email">
+                </mat-form-field>
+                <mat-form-field>
+                    <input required minlength="10" [(ngModel)]="newUser.usn" name="usn" autocomplete="new-password"
+                        matInput placeholder="University Serial Number">
+                </mat-form-field>
+                <mat-form-field>
+                    <input required minlength="10" [(ngModel)]="newUser.password" name="password"
+                        autocomplete="new-password" matInput type='password' placeholder="Password">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Select College</mat-label>
+                    <mat-select name="college_id" required [(ngModel)]='newUser.college_id'>
+                        <mat-option *ngFor="let college of colleges" [value]="college.id">
+                            {{college.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Select Department</mat-label>
+                    <mat-select name="department_id" required [(ngModel)]='newUser.department_id'>
+                        <mat-option *ngFor="let department of departments" [value]="department.id">
+                            {{department.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </form>
+            <div class="buttons">
+                <div class="login">
+                    <button mat-raised-button color="primary" (click)="register()">Add Students</button>
+                </div>
+            </div>
+        </div>
     </mat-tab>
 </mat-tab-group>

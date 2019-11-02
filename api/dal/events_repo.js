@@ -139,10 +139,8 @@ export class EventsRepository {
         if (event == null)
             return false;
         let pool = db.getConnection();
-        console.log(event.event_dt);
         let dateVal = new Date(Date.parse(event.event_dt));
         dateVal = dateVal.getFullYear() + "-" + (dateVal.getMonth() + 1) + "-" + dateVal.getDate();
-        console.log(dateVal);
         let addQuery = `call add_event (${currentUser.id},'${event.name}', '${event.description}', '${event.location}', '${dateVal}','${event.interest_ids}',@event_id)`;
         var result = await pool.query(addQuery)
         pool.releaseConnection();
