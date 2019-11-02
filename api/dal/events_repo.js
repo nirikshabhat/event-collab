@@ -122,7 +122,7 @@ export class EventsRepository {
         on ev.id=oe.event_id
         inner join students s
         on s.id=oe.organizer_id
-        where ev.id not in (select event_id from student_event_map where student_id=${currentUser.id})
+        where ev.id not in (select event_id from student_event_map where student_id=${currentUser.id}) and ev.event_date > current_date()
         group by ev.id`;
         var rows = await pool.query(ev_query);
         rows.forEach(row => {
