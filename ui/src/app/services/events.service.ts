@@ -75,4 +75,14 @@ export class EventsService {
     leave_event(event: Event) {
         return this.post('http://localhost:3000/events/leave', event);
     }
+
+    get_current_user_name() {
+        let user = this.authService.getCurrentUser();
+        return user.name;
+    }
+
+    get_current_organizer_name() {
+        let organizer = this.authService.getCurrentOrganizer();
+        return organizer.name;
+    }
 }

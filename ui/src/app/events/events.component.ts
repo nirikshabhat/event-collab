@@ -11,8 +11,12 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { OpenEventComponent } from '../events/open-event/open-event.component'
 import { FormGroup, FormControl, Validators, NgForm } from '@angular/forms'
 import { MatTabChangeEvent } from '@angular/material';
+import { DatePipe } from '@angular/common'
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 @Component({
+    providers: [DatePipe],
     templateUrl: 'events.component.html',
     styleUrls: ['events.component.css']
 })
@@ -77,7 +81,8 @@ export class EventsComponent implements OnInit {
         private snackBar: MatSnackBar,
         public eventDialog: MatDialog,
         private router: Router,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        private datepipe: DatePipe
     ) {
         this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     }
@@ -284,5 +289,111 @@ export class EventsComponent implements OnInit {
         this.newUser.department_id = this.departments[0].id;
         this.newUser.college_id = this.colleges[0].id;
         this.formDirective.reset();
+    }
+
+    downloadUpcomingEvents() {
+        if (this.events.length <= 0) {
+            this.displayInfo("No Upcoming Events", "Failure");
+        }
+        else {
+            let doc = new jsPDF();
+
+            let curDate = new Date();
+            let curDateStr = this.datepipe.transform(curDate, 'MMM d, y');
+            let userName = this.eventsService.get_current_organizer_name();
+
+            var data = [];
+            this.events.forEach((event) => {
+                var eventData = [];
+                eventData.push(event.name);
+                eventData.push(event.description);
+                eventData.push(event.interest_names);
+                eventData.push(event.location);
+                eventData.push(this.datepipe.transform(event.event_dt, 'MMM d, y'));
+                data.push(eventData);
+            });
+
+            doc.autoTable({
+                head: [['Event Name', 'Event Description', 'Interests', 'Event Location', 'Event Date']],
+                body: data,
+                didDrawPage: data => {
+                    doc.setFontSize(15);
+                    doc.setFont("times");
+                    doc.setFontType("italic");
+                    doc.setTextColor(255, 87, 51);
+                    doc.setFontStyle('normal');
+
+                    var text = "Events Organized by " + userName + " as of " + curDateStr;
+                    doc.text(text, 30, 22);
+
+                    // Footer
+                    var str = "Page " + doc.internal.getNumberOfPages()
+
+                    doc.setFontSize(10);
+
+                    // jsPDF 1.4+ uses getWidth, <1.4 uses .width
+                    var pageSize = doc.internal.pageSize;
+                    var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
+                    doc.text(str, data.settings.margin.left, pageHeight - 10);
+                },
+                margin: { top: 30 }
+            });
+            var fileName = userName + " Upcoming" + ".pdf";
+            doc.save(fileName);
+        }
+    }
+
+    downloadRegistrationHistory() {
+        if (this.history.length <= 0) {
+            this.displayInfo("No Registration History", "Failure");
+        }
+        else {
+            let doc = new jsPDF();
+
+            let curDate = new Date();
+            let curDateStr = this.datepipe.transform(curDate, 'MMM d, y');
+            let userName = this.eventsService.get_current_organizer_name();
+
+            var data = [];
+            this.history.forEach((event) => {
+                var eventData = [];
+                eventData.push(event.student_name);
+                eventData.push(event.event_name);
+                eventData.push(event.usn);
+                eventData.push(event.registration_status);
+                eventData.push(event.college_name);
+                eventData.push(event.department_name);
+                eventData.push(this.datepipe.transform(event.updated_dt, 'MMM d, y'));
+                data.push(eventData);
+            });
+
+            doc.autoTable({
+                head: [['Student Name', 'Event Name', 'USN', 'Status', 'College', 'Department', 'Updated At']],
+                body: data,
+                didDrawPage: data => {
+                    doc.setFontSize(15);
+                    doc.setFont("times");
+                    doc.setFontType("italic");
+                    doc.setTextColor(255, 87, 51);
+                    doc.setFontStyle('normal');
+
+                    var text = "Registration History for Events Organized by " + userName + " as of " + curDateStr;
+                    doc.text(text, 20, 22);
+
+                    // Footer
+                    var str = "Page " + doc.internal.getNumberOfPages()
+
+                    doc.setFontSize(10);
+
+                    // jsPDF 1.4+ uses getWidth, <1.4 uses .width
+                    var pageSize = doc.internal.pageSize;
+                    var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
+                    doc.text(str, data.settings.margin.left, pageHeight - 10);
+                },
+                margin: { top: 30 }
+            });
+            var fileName = userName + " Upcoming" + ".pdf";
+            doc.save(fileName);
+        }
     }
 }

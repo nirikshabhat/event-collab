@@ -44,3 +44,7 @@ table {
   margin: 0 auto !important;
   font-family: Raleway;
 }
+
+.print-icon-2x {
+  transform: scale(1.6);
+}

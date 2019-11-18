@@ -22,6 +22,9 @@
                         <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search for an event">
                     </mat-form-field>
                 </div>
+                <button mat-button class="admin-upcoming-btn print-icon-2x" color="accent" (click)="downloadUpcomingEvents()">
+                    <mat-icon class="mat-24" aria-label="Print Upcoming events">print</mat-icon>
+                </button>
                 <div class="add-event-btn">
                     <button mat-fab color="primary" id="add-button" matTooltip="Add an event" (click)="addEvent()"><i
                             class="material-icons">add</i></button>
@@ -110,6 +113,9 @@
                         <input matInput (keyup)="applyHistoryFilter($event.target.value)"
                             placeholder="Search for an event">
                     </mat-form-field>
+                    <button mat-button class="print-icon-2x" color="accent" (click)="downloadRegistrationHistory()">
+                        <mat-icon class="mat-24" aria-label="Print Registration history">print</mat-icon>
+                    </button>
                 </div>
             </div>
 

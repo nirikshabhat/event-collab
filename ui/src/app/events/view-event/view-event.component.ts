@@ -8,8 +8,12 @@ import { MatSnackBar } from '@angular/material';
 import { MatDialog } from '@angular/material/dialog';
 import { OpenEventComponent } from '../../events/open-event/open-event.component'
 import { Router, ActivatedRoute } from '@angular/router';
+import { DatePipe } from '@angular/common'
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 @Component({
+    providers: [DatePipe],
     templateUrl: 'view-event.component.html',
     styleUrls: ['view-event.component.css']
 })
@@ -29,7 +33,8 @@ export class ViewEventComponent implements OnInit, AfterViewInit {
         private snackBar: MatSnackBar,
         public eventDialog: MatDialog,
         private router: Router,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        private datepipe: DatePipe
     ) {
         this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     }
@@ -135,6 +140,111 @@ export class ViewEventComponent implements OnInit, AfterViewInit {
                 this.displayInfo("Failure deleting event", "Failure")
             }
         });
+    }
+
+    downloadEnrolledEvents() {
+        if (this.enrolled_events.length <= 0) {
+            this.displayInfo("No Enrolled Events", "Failure");
+        }
+        else {
+
+            let doc = new jsPDF();
+
+            let curDate = new Date();
+            let curDateStr = this.datepipe.transform(curDate, 'MMM d, y');
+            let userName = this.eventsService.get_current_user_name();
+
+            var data = [];
+            this.enrolled_events.forEach((event) => {
+                var eventData = [];
+                eventData.push(event.name);
+                eventData.push(event.description);
+                eventData.push(event.interest_names);
+                eventData.push(event.location);
+                eventData.push(this.datepipe.transform(event.event_dt, 'MMM d, y'));
+                data.push(eventData);
+            });
+
+            doc.autoTable({
+                head: [['Event Name', 'Event Description', 'Interests', 'Event Location', 'Event Date']],
+                body: data,
+                didDrawPage: data => {
+                    doc.setFontSize(15);
+                    doc.setFont("times");
+                    doc.setFontType("italic");
+                    doc.setTextColor(255, 87, 51);
+                    doc.setFontStyle('normal');
+
+                    var text = "Enrolled Events for " + userName + " as of " + curDateStr;
+                    doc.text(text, 30, 22);
+
+                    // Footer
+                    var str = "Page " + doc.internal.getNumberOfPages()
+
+                    doc.setFontSize(10);
+
+                    // jsPDF 1.4+ uses getWidth, <1.4 uses .width
+                    var pageSize = doc.internal.pageSize;
+                    var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
+                    doc.text(str, data.settings.margin.left, pageHeight - 10);
+                },
+                margin: { top: 30 }
+            });
+            var fileName = userName + " Enrolled" + ".pdf";
+            doc.save(fileName);
+        }
+    }
+
+    downloadUpcomingEvents() {
+        if (this.upcoming_events.length <= 0) {
+            this.displayInfo("No Upcoming Events", "Failure");
+        }
+        else {
+            let doc = new jsPDF();
+
+            let curDate = new Date();
+            let curDateStr = this.datepipe.transform(curDate, 'MMM d, y');
+            let userName = this.eventsService.get_current_user_name();
+
+            var data = [];
+            this.upcoming_events.forEach((event) => {
+                var eventData = [];
+                eventData.push(event.name);
+                eventData.push(event.description);
+                eventData.push(event.interest_names);
+                eventData.push(event.location);
+                eventData.push(this.datepipe.transform(event.event_dt, 'MMM d, y'));
+                data.push(eventData);
+            });
+
+            doc.autoTable({
+                head: [['Event Name', 'Event Description', 'Interests', 'Event Location', 'Event Date']],
+                body: data,
+                didDrawPage: data => {
+                    doc.setFontSize(15);
+                    doc.setFont("times");
+                    doc.setFontType("italic");
+                    doc.setTextColor(255, 87, 51);
+                    doc.setFontStyle('normal');
+
+                    var text = "Enrolled Events for " + userName + " as of " + curDateStr;
+                    doc.text(text, 30, 22);
+
+                    // Footer
+                    var str = "Page " + doc.internal.getNumberOfPages()
+
+                    doc.setFontSize(10);
+
+                    // jsPDF 1.4+ uses getWidth, <1.4 uses .width
+                    var pageSize = doc.internal.pageSize;
+                    var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
+                    doc.text(str, data.settings.margin.left, pageHeight - 10);
+                },
+                margin: { top: 30 }
+            });
+            var fileName = userName + " Upcoming" + ".pdf";
+            doc.save(fileName);
+        }
     }
 
     displayInfo(message: string, action: string) {

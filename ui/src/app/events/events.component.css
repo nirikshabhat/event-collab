@@ -70,3 +70,12 @@ table {
   display: flex;
   flex-direction: column;
 }
+
+.print-icon-2x {
+  transform: scale(1.6);
+}
+
+.admin-upcoming-btn {
+  margin-left: -126px;
+  margin-top: 8px;
+}
